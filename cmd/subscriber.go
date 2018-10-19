@@ -95,7 +95,7 @@ var subscriberSearchCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		fmt.Printf(subscriber.String())
+		fmt.Println(subscriber.String())
 	},
 }
 
