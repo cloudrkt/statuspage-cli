@@ -24,10 +24,16 @@ Get the binary from the release page or build it yourself using go get.
 Get the pageid and apikey in your statuspage.io admin panel and create a .statuspage.yaml file in your home directory with the following content:
 
 ```yaml
- sp_pageid: <pageid>
- sp_apikey: <apikey>
+ pageid: <pageid>
+ apikey: <apikey>
  ```
 
+You can also use environment variables with prefix SP_:
+
+```bash
+ export SP_PAGEID <pageid>
+ export SP_APIKEY <apikey>
+ ```
 
 ## statuspage options
 
