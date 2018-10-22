@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -12,8 +13,9 @@ import (
 
 // AppConfig represents the CLI application
 type AppConfig struct {
-	CfgFile string
 	Client  *statuspage.Client
+	Config  *viper.Viper
+	CfgFile string
 	Debug   bool
 }
 
@@ -44,8 +46,11 @@ func init() {
 }
 
 func initConfig() {
+
+	app.Config = viper.New()
+
 	if app.CfgFile != "" {
-		viper.SetConfigFile(app.CfgFile)
+		app.Config.SetConfigFile(app.CfgFile)
 	} else {
 		home, err := homedir.Dir()
 		if err != nil {
@@ -53,34 +58,46 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		viper.AddConfigPath(home)
-		viper.AddConfigPath("/etc/statuspage/")
-		viper.AddConfigPath(".")
-		viper.SetConfigName(".statuspage")
+		app.Config.AddConfigPath(home)
+		app.Config.AddConfigPath("/etc/statuspage/")
+		app.Config.AddConfigPath(".")
+		app.Config.SetConfigName(".statuspage")
 	}
 
-	viper.AutomaticEnv()
+	app.Config.SetEnvPrefix("sp")
+	app.Config.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err == nil {
+	if err := app.Config.ReadInConfig(); err == nil {
 		if app.Debug {
-			fmt.Println("Using config file:", viper.ConfigFileUsed())
+			fmt.Println("Using config file:", app.Config.ConfigFileUsed())
 		}
 	}
 
-	err := viper.ReadInConfig()
+	err := app.Config.ReadInConfig()
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	configureClient(viper.GetString("sp_apikey"), viper.GetString("sp_pageid"))
-}
-
-func configureClient(apikey, pageid string) {
-	var err error
-
-	app.Client, err = statuspage.NewClient(apikey, pageid)
+	err = configureClient()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func configureClient() error {
+	if !app.Config.IsSet("apikey") {
+		return errors.New("apikey not set")
+	}
+
+	if !app.Config.IsSet("pageid") {
+		return errors.New("pageid not set")
+	}
+
+	var err error
+	app.Client, err = statuspage.NewClient(
+		app.Config.GetString("apikey"),
+		app.Config.GetString("pageid"),
+	)
+	return err
 }
