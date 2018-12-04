@@ -13,6 +13,8 @@ This commandline tool interacts with the statuspage.io API.
 - [x] Create user
 - [x] Delete user
 - [x] Search user
+- [x] List users
+- [x] List components
 - [ ] Everything else
 
 ## Installation:
