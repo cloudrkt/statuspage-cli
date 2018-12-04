@@ -1,10 +1,10 @@
 # statuspage-cli
 
-Statuspage.io CLI tool 
+Statuspage.io CLI tool
 
 ## Synopsis
 
-This commandline tool interacts with the statuspage.io API. 
+This commandline tool interacts with the statuspage.io API.
 
 *note: Beware, this is work in progress and without warranty! It might be broken.*
 
