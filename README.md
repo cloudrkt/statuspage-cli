@@ -31,8 +31,8 @@ Get the pageid and apikey in your statuspage.io admin panel and create a .status
 You can also use environment variables with prefix SP_:
 
 ```bash
- export SP_PAGEID <pageid>
- export SP_APIKEY <apikey>
+ export SP_PAGEID=<pageid>
+ export SP_APIKEY=<apikey>
  ```
 
 ## statuspage options
