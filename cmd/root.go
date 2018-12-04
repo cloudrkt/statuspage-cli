@@ -23,7 +23,7 @@ var app *AppConfig
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Version: "0.1",
+	Version: "0.2",
 	Use:     "statuspage",
 	Short:   "The Statuspage cli tool",
 	Long:    `This commandline tool interacts with the statuspage.io API`,
